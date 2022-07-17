@@ -12,6 +12,7 @@
         layout="@layout/app_toolbar_layout"/>
 
     <include
+        android:id="@+id/following_list"
         layout="@layout/common_list_layout"/>
 
 </LinearLayout>

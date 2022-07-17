@@ -1,14 +1,17 @@
 package com.lyc.gitassistant.ui.ext
 
+import android.annotation.SuppressLint
 import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.widget.Toolbar
 import androidx.fragment.app.Fragment
+import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import androidx.viewpager2.adapter.FragmentStateAdapter
 import androidx.viewpager2.widget.ViewPager2
 import com.google.android.material.bottomnavigation.BottomNavigationView
+import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.lyc.gitassistant.GitAssistantApp
 import com.lyc.gitassistant.network.appContext
 import com.lyc.gitassistant.ui.fragment.MyFollowingFragment
@@ -30,17 +33,17 @@ fun BottomNavigationView.init(navigationItemSelectedAction: (Int) -> Unit): Bott
 
 fun ViewPager2.initMain(fragment: Fragment): ViewPager2 {
     //是否可滑动
-    this.isUserInputEnabled = false
+    this.isUserInputEnabled = true
     this.offscreenPageLimit = 3
     //设置适配器
     adapter = object : FragmentStateAdapter(fragment) {
         override fun createFragment(position: Int): Fragment {
             return when (position) {
                 0 -> {
-                    MyFollowingFragment()
+                    SearchFragment()
                 }
                 1 -> {
-                    SearchFragment()
+                    MyFollowingFragment()
                 }
                 2 -> {
                     ProfileFragment()
@@ -126,5 +129,28 @@ fun SwipeRefreshLayout.init(onRefreshListener: () -> Unit) {
         }
         //设置主题颜色
         setColorSchemeColors(SettingUtil.getColor(appContext))
+    }
+}
+
+fun RecyclerView.initFloatBtn(floatbtn: FloatingActionButton) {
+    //监听recyclerview滑动到顶部的时候，需要把向上返回顶部的按钮隐藏
+    addOnScrollListener(object : RecyclerView.OnScrollListener() {
+        @SuppressLint("RestrictedApi")
+        override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+            super.onScrolled(recyclerView, dx, dy)
+            if (!canScrollVertically(-1)) {
+                floatbtn.visibility = View.INVISIBLE
+            }
+        }
+    })
+    floatbtn.backgroundTintList = SettingUtil.getOneColorStateList(appContext)
+    floatbtn.setOnClickListener {
+        val layoutManager = layoutManager as LinearLayoutManager
+        //如果当前recyclerview 最后一个视图位置的索引大于等于40，则迅速返回顶部，否则带有滚动动画效果返回到顶部
+        if (layoutManager.findLastVisibleItemPosition() >= 40) {
+            scrollToPosition(0)//没有动画迅速返回到顶部(马上)
+        } else {
+            smoothScrollToPosition(0)//有滚动动画返回到顶部(有点慢)
+        }
     }
 }

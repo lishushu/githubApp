@@ -5,6 +5,7 @@ import com.lyc.gitassistant.common.imageloader.glideImpl.YCGlideImageLoader
 import com.lyc.gitassistant.ui.base.BaseApp
 import com.lyc.gitassistant.viewmodel.AppViewModel
 import com.tencent.mmkv.MMKV
+import leakcanary.LeakCanary
 
 /**
  * @description
@@ -31,6 +32,7 @@ class GitAssistantApp : BaseApp() {
     }
 
     private fun initNecessarySdks() {
+        // LeakCanary初始化
         ///初始化图片加载 使用glide
         YCImageLoaderManager.initialize(YCGlideImageLoader(this))
         //mmkv初始化

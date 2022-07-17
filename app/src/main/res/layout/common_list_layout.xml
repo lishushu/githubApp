@@ -19,18 +19,18 @@
             app:layout_behavior="@string/appbar_scrolling_view_behavior" />
     </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
-<!--    <com.google.android.material.floatingactionbutton.FloatingActionButton-->
-<!--        android:id="@+id/float_btn"-->
-<!--        android:layout_width="wrap_content"-->
-<!--        android:layout_height="wrap_content"-->
-<!--        android:layout_gravity="bottom|end"-->
-<!--        android:layout_marginRight="12dp"-->
-<!--        android:layout_marginBottom="24dp"-->
-<!--        android:scaleType="center"-->
-<!--        android:src="@drawable/fab_up"-->
-<!--        android:visibility="invisible"-->
-<!--        app:elevation="5dp"-->
-<!--        app:fabSize="mini"-->
-<!--        app:layout_behavior=".ui.widgets.FatScrollAwareFABBehavior" />-->
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/float_btn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|end"
+        android:layout_marginRight="12dp"
+        android:layout_marginBottom="24dp"
+        android:scaleType="center"
+        android:src="@drawable/fab_up"
+        android:visibility="invisible"
+        app:elevation="5dp"
+        app:fabSize="mini"
+        app:layout_behavior=".ui.widgets.FatScrollAwareFABBehavior" />
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

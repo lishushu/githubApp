@@ -3,6 +3,8 @@ package com.lyc.gitassistant.ui.fragment
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
+import android.view.KeyEvent
+import android.view.View
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -12,6 +14,7 @@ import com.lyc.gitassistant.databinding.FragmentSearchBinding
 import com.lyc.gitassistant.ui.adapter.GitRepoAdapter
 import com.lyc.gitassistant.ui.base.BaseFragment
 import com.lyc.gitassistant.ui.ext.init
+import com.lyc.gitassistant.ui.ext.initFloatBtn
 import com.lyc.gitassistant.ui.ext.initFooter
 import com.lyc.gitassistant.ui.widgets.SpaceItemDecoration
 import com.lyc.gitassistant.viewmodel.FragSearchViewModel
@@ -30,9 +33,28 @@ class SearchFragment:BaseFragment<FragSearchViewModel, FragmentSearchBinding>() 
             override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
             }
             override fun afterTextChanged(p0: Editable?) {
-
+                p0?.let {
+                    if(it.isEmpty()) {
+                        reposAdapter.clearData()
+                        reposAdapter.notifyDataSetChanged()
+                    }
+                }
             }
         })
+        mViewBind.searchEditText.setOnKeyListener(object : View.OnKeyListener{
+            override fun onKey(p0: View?, keyCode: Int, p2: KeyEvent?): Boolean {
+                if (keyCode == KeyEvent.KEYCODE_ENTER) {
+                    val searchQ = mViewBind.searchEditText.text.toString()
+                    if (searchQ.isNullOrBlank()) {
+                        return false
+                    }
+                    doSearch()
+                    return true
+                }
+                return false
+            }
+        })
+
         mViewBind.searchIconBtn.setOnClickListener {
             mViewBind.searchEditText.text?.let {
                 doSearch()
@@ -46,6 +68,8 @@ class SearchFragment:BaseFragment<FragSearchViewModel, FragmentSearchBinding>() 
                 //触发加载更多时请求数据
                 mViewModel.loadMoreData(context!!)
             })
+            //初始化FloatingActionButton
+            it.initFloatBtn(mViewBind.searchComList.floatBtn)
         }
 
         mViewBind.searchComList.swipeRefresh.isEnabled = false

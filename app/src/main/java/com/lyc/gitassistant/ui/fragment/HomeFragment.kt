@@ -1,6 +1,7 @@
 package com.lyc.gitassistant.ui.fragment
 
 import android.os.Bundle
+import androidx.viewpager2.widget.ViewPager2
 import com.lyc.gitassistant.R
 import com.lyc.gitassistant.databinding.FragmentHomeBinding
 import com.lyc.gitassistant.ui.base.BaseFragment
@@ -20,12 +21,23 @@ class HomeFragment : BaseFragment<FragHomeViewModel, FragmentHomeBinding>() {
         //初始化 bottomBar
         mViewBind.mainBottom.init {
             when (it) {
-                R.id.menu_main -> mViewBind.mainViewpager.setCurrentItem(0, false)
-                R.id.menu_search_project -> mViewBind.mainViewpager.setCurrentItem(1, false)
-                R.id.menu_me -> mViewBind.mainViewpager.setCurrentItem(2, false)
+                R.id.menu_search_project -> mViewBind.mainViewpager.setCurrentItem(0, true)
+                R.id.menu_main -> mViewBind.mainViewpager.setCurrentItem(1, true)
+                R.id.menu_me -> mViewBind.mainViewpager.setCurrentItem(2, true)
             }
         }
-        mViewBind.mainBottom.interceptLongClick(R.id.menu_main,R.id.menu_search_project,R.id.menu_me)
+        mViewBind.mainViewpager.registerOnPageChangeCallback(object:ViewPager2.OnPageChangeCallback(){
+            override fun onPageSelected(position: Int) {
+                super.onPageSelected(position)
+                mViewBind.mainBottom.selectedItemId = when(position) {
+                    0 -> R.id.menu_search_project
+                    1 -> R.id.menu_main
+                    2 -> R.id.menu_me
+                    else -> {R.id.menu_search_project}
+                }
+            }
+        })
+        mViewBind.mainBottom.interceptLongClick(R.id.menu_search_project,R.id.menu_main,R.id.menu_me)
     }
 
 }
