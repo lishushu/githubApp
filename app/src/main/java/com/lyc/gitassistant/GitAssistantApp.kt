@@ -14,6 +14,8 @@ import leakcanary.LeakCanary
  */
 
 
+//Application全局的ViewModel，里面存放了一些账户信息
+val appViewModel: AppViewModel by lazy { GitAssistantApp.appViewModelInstance }
 
 class GitAssistantApp : BaseApp() {
 

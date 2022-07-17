@@ -3,11 +3,13 @@ package com.lyc.gitassistant.ui.fragment
 import android.os.Bundle
 import com.lyc.gitassistant.AppCacheUtil
 import com.lyc.gitassistant.R
+import com.lyc.gitassistant.appViewModel
 import com.lyc.gitassistant.databinding.FragmentMyFollowingBinding
 import com.lyc.gitassistant.databinding.FragmentMyProfileBinding
 import com.lyc.gitassistant.databinding.FragmentSearchBinding
 import com.lyc.gitassistant.network.NetworkApi
 import com.lyc.gitassistant.ui.base.BaseFragment
+import com.lyc.gitassistant.ui.ext.CommonUtils
 import com.lyc.gitassistant.ui.ext.init
 import com.lyc.gitassistant.ui.ext.showMessage
 import com.lyc.gitassistant.ui.navigation.nav
@@ -27,6 +29,14 @@ class ProfileFragment:BaseFragment<FragProfileViewModel, FragmentMyProfileBindin
 
             })
         }
+
+        mViewBind.meSwipe.isEnabled = false
+
+        appViewModel.userInfo.value?.run {
+            CommonUtils.loadUserHeaderImage(mViewBind.imageView, avatarUrl?:"")
+            mViewBind.meName.text = login
+        }
+
     }
 
     private fun logoOut() {

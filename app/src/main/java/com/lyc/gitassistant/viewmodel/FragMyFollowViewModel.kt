@@ -2,6 +2,7 @@ package com.lyc.gitassistant.viewmodel
 
 import android.content.Context
 import androidx.lifecycle.MutableLiveData
+import com.lyc.gitassistant.appViewModel
 import com.lyc.gitassistant.common.ConfigConstant
 import com.lyc.gitassistant.network.base.ResultCallBack
 import com.lyc.gitassistant.repository.ReposRepository
@@ -30,7 +31,7 @@ class FragMyFollowViewModel: BaseViewModel(), IPagingLoad,ResultCallBack<ArrayLi
 
     private fun loadData(context: Context) {
         loadState.value = LoadState.Loading
-        reposRepository.getUserStarRepos("",page,this)
+        reposRepository.getUserStarRepos(appViewModel.userInfo.value?.login?:"",page,this)
     }
     override fun refresh(context: Context) {
         page = 1

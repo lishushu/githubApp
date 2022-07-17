@@ -1,5 +1,6 @@
 package com.lyc.gitassistant
 
+import com.lyc.gitassistant.entity.response.UserInfoEntity
 import com.tencent.mmkv.MMKV
 
 object AppCacheUtil {
@@ -7,6 +8,8 @@ object AppCacheUtil {
     const val appCacheInfo = "AppCacheData"
     private const val keyForAccessToken = "ACCESS_TOKEN_KEY"
     private const val keyForStart = "Start_Record_KEY"
+    private const val keyForUser = "USER_INFO_KEY"
+
     /**
      * 是否是第一次登陆
      */

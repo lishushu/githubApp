@@ -7,10 +7,17 @@ import android.webkit.WebStorage
 import androidx.lifecycle.MutableLiveData
 import com.lyc.gitassistant.AppCacheUtil
 import com.lyc.gitassistant.BuildConfig
-import com.lyc.gitassistant.entity.response.AccessToken
+import com.lyc.gitassistant.appViewModel
+import com.lyc.gitassistant.common.utils.FlatMapResponse2Result
+import com.lyc.gitassistant.common.utils.FlatMapResult2Response
+import com.lyc.gitassistant.common.utils.LogUtils
+import com.lyc.gitassistant.entity.response.UserInfoEntity
 import com.lyc.gitassistant.network.ApiServiceFactory
 import com.lyc.gitassistant.network.observer.ResultProgressObserver
 import com.lyc.gitassistant.network.service.LoginService
+import io.reactivex.Observable
+import io.reactivex.functions.BiFunction
+import io.reactivex.functions.Function
 
 /**
  * 登录数据仓库对象
@@ -20,6 +27,7 @@ class LoginRepository {
     private var accessTokenStorage: String? = ""
         get() = AppCacheUtil.getAccessToken()
 
+    private val userRepository by lazy { UserRepository() }
     /**
      * 登录
      */
@@ -27,15 +35,41 @@ class LoginRepository {
 
         clearTokenStorage()
         val loginService = ApiServiceFactory.getApiInstance(LoginService::class.java)
+        val tokenService = loginService
+            .authorizationsCode(BuildConfig.CLIENT_ID, BuildConfig.CLIENT_SECRET, code)
+            .flatMap {
+                FlatMapResponse2Result(it)
+            }.map {
+                val token = it.access_token
+                token!!
+            }.doOnNext {
+                LogUtils.debugInfo("token $it")
+                accessTokenStorage = it
+                AppCacheUtil.setAccessToken(it)
+            }.onErrorResumeNext(Function<Throwable, Observable<String>> { t ->
+                LogUtils.debugInfo("token onErrorResumeNext ")
+                clearTokenStorage()
+                Observable.error(t)
+            })
 
-        val tokenOb = loginService.authorizationsCode(BuildConfig.CLIENT_ID,BuildConfig.CLIENT_SECRET,code)
-        ApiServiceFactory.executeResult(tokenOb, object : ResultProgressObserver<AccessToken>(context) {
-            override fun onSuccess(result: AccessToken?) {
-                if(TextUtils.isEmpty(result?.access_token)) {
+        val userService = userRepository.getPersonInfoObservable()
+
+        val authorizations = Observable.zip(tokenService, userService,
+            BiFunction<String, UserInfoEntity, UserInfoEntity> { _, user ->
+                user
+            }).flatMap {
+            FlatMapResult2Response(it)
+        }
+
+        ApiServiceFactory.executeResult(authorizations, object : ResultProgressObserver<UserInfoEntity>(context) {
+            override fun onSuccess(result: UserInfoEntity?) {
+                if(TextUtils.isEmpty(accessTokenStorage)) {
                     loginRes.value = false
                 } else {
-                    result?.access_token?.let { AppCacheUtil.setAccessToken(it) }
+                    accessTokenStorage?.let { AppCacheUtil.setAccessToken(it) }
                     loginRes.value = true
+                    //更新 & 保存用户信息
+                    result?.let { appViewModel.updateUserInfo(info = it) }
                 }
             }
 
