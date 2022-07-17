@@ -28,4 +28,5 @@ Kotlin + ViewMoel + LiveData + Navigation + Retrofit + Rxjava构建的MVVM-LiveD
 - 主页-搜索页面
 
 <img width="884" alt="image" src="https://user-images.githubusercontent.com/2612850/179400156-c4c7f57b-942e-4b95-b373-fc8ed68a036a.png">
+<img width="220" alt="image" src="https://user-images.githubusercontent.com/2612850/179401199-f4122e38-1f94-4b3e-b64e-655f44c69a5c.png">
 
