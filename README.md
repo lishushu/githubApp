@@ -1,13 +1,13 @@
 # GitAssistant Gitub简单Android端应用
 
 ### 运行使用说明
-Github 开发API，登录授权已经摒弃用户名和密码方式，使用token授权，所以需要自行申请对应的clientId和secretId填写对应的Authorization callback URL，
+Github 开发API，登录授权已经摒弃用户名和密码方式，使用token授权，所以需要自行注册申请gitHubApp获取到clientId和secretId和填写对应的Authorization callback URL，
 配置到项目的local.properties. 该项目代码内使用的**CallBack url = "lycgithub://oauth"**
 ``` 
 CLIENT_ID = "ccd**********947"
 CLIENT_SECRET = "cc***********7"
 ```
-![image](https://user-images.githubusercontent.com/2612850/179501900-dcf1920d-07a0-400a-bc8d-0bda1764701f.png)
+![oauth_guide](https://user-images.githubusercontent.com/2612850/179503135-7d142dec-aaf3-4133-804e-ecfed821686c.png)
 
 申请注册Github APP ： https://github.com/settings/applications/new
 
@@ -21,7 +21,6 @@ GitAssistant是一款为Github打造的简单Android应用，评估计划为小�
 ![GitAssistant](https://user-images.githubusercontent.com/2612850/179391493-03e3a605-9004-44d9-9e6a-903ea86b5c13.png)
 
 - common提供基础业务无关的功能以及集成和隔离第三方SDK，后续业务发展可单独成为一个独立module
-
 
 #### 使用的技术栈和架构划分
 Kotlin + ViewMoel + LiveData + Navigation + Retrofit + Rxjava构建的MVVM-LiveData架构：
