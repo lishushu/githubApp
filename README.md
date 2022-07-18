@@ -1,4 +1,19 @@
 # GitAssistant Gitub简单Android端应用
+
+### 运行使用说明
+Github 开发API，登录授权已经摒弃用户名和密码方式，使用token授权，所以需要自行申请对应的clientId和secretId填写对应的Authorization callback URL，
+配置到项目的local.properties. 该项目代码内使用的**CallBack url = "lycgithub://oauth"**
+``` 
+CLIENT_ID = "ccd**********947"
+CLIENT_SECRET = "cc***********7"
+```
+![image](https://user-images.githubusercontent.com/2612850/179501900-dcf1920d-07a0-400a-bc8d-0bda1764701f.png)
+
+申请注册Github APP ： https://github.com/settings/applications/new
+
+API授权官方文档：[作为 GitHub 应用程序 访问 API 端点](https://docs.github.com/cn/developers/apps/building-github-apps/authenticating-with-github-apps#%E4%BD%9C%E4%B8%BA-github-%E5%BA%94%E7%94%A8%E7%A8%8B%E5%BA%8F-%E8%AE%BF%E9%97%AE-api-%E7%AB%AF%E7%82%B9)
+
+
 ### 项目简介
 GitAssistant是一款为Github打造的简单Android应用，评估计划为小型App项目，故而不走组件化设计方案。初步也未规划模块划分，初步以包划分不同模块。
 
@@ -29,4 +44,8 @@ Kotlin + ViewMoel + LiveData + Navigation + Retrofit + Rxjava构建的MVVM-LiveD
 
 <img width="884" alt="image" src="https://user-images.githubusercontent.com/2612850/179400156-c4c7f57b-942e-4b95-b373-fc8ed68a036a.png">
 <img width="220" alt="image" src="https://user-images.githubusercontent.com/2612850/179401199-f4122e38-1f94-4b3e-b64e-655f44c69a5c.png">
+
+
+https://user-images.githubusercontent.com/2612850/179502602-6fb88bbd-f29d-404c-8c43-4652040c2b86.mp4
+
 
